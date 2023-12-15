@@ -1,0 +1,73 @@
+body {
+    background-color: #071E26;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.anime-card {
+    border: 1px solid #010406;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #0B2F3C;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: calc(20% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+
+a:link {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.anime-title{
+    color: #00aaff;
+    text-decoration: none;
+}
+
+.anime-title:hover {
+    color: #99DDFF;
+}
+
+.anime-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.anime-info {
+    font-size: 16px;
+    margin: 5px;
+}
+
+.anime-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+button {
+padding: 10px 20px;
+font-size: 16px;
+background-color: #4CAF50; /* Зелений колір */
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+button:hover {
+background-color: #45a049; /* Темнозелений колір при наведенні */
+}
