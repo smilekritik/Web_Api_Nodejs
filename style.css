@@ -4,7 +4,63 @@ body {
     text-align: center;
     padding: 20px;
     font-family: 'PT Sans', sans-serif;
-}
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .anime-card {
+    border: 1px solid #010406;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #0B2F3C;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: calc(20% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .anime-card:hover {
+    transform: scale(1.05);
+  }
+
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  label {
+    font-size: 1.2em;
+  }
+
+  #search {
+    font-size: 1.2em;
+    padding: 8px;
+  }
+
+  #search::placeholder {
+    font-size: 1em;
+    color: #888;
+  }
 
 .anime-card {
     border: 1px solid #010406;
@@ -57,10 +113,19 @@ a:hover {
     margin-bottom: 20px;
 }
 
+.search-form {
+    float: right;
+    margin-top: 10px;
+}
+
+.anime-grid {
+    clear: both;
+}
+
 button {
 padding: 10px 20px;
 font-size: 16px;
-background-color: #4CAF50; /* Зелений колір */
+background-color: #4CAF50;
 color: white;
 border: none;
 border-radius: 5px;
@@ -69,5 +134,20 @@ transition: background-color 0.3s;
 }
 
 button:hover {
-background-color: #45a049; /* Темнозелений колір при наведенні */
+background-color: #45a049;
+}
+
+label {
+    font-size: 1.2em;
+}
+
+#search {
+    font-size: 1.2em;
+    padding: 8px;
+}
+
+
+#search::placeholder {
+    font-size: 1em;
+    color: #888; 
 }

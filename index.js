@@ -24,18 +24,27 @@ const translationMap = {
 
 app.get('/', async (req, res) => {
     try {
-        if (!cachedAnimeData) {
-            const response = await axios.get('https://shikimori.me/api/animes?limit=10&order=random');
-            cachedAnimeData = response.data;
-        }
+        const response = await axios.get('https://shikimori.me/api/animes?limit=10&order=random');
+        cachedAnimeData = response.data;
 
         let html = '<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Аніме з API</title>';
-        
+
         const styles = fs.readFileSync(path.join(__dirname, 'style.css'), 'utf-8');
-        
+
         html += `<style>${styles}</style></head><body>`;
-        html += '<h1>Список випадкових аніме:</h1>';
         html += '<div class="anime-grid">';
+
+        html += `
+        <div class="search-form">
+        <form action="/search" method="get">
+             <label for="search">Пошук аніме:</label>
+             <input type="text" id="search" name="query" placeholder="Введіть назву аніме">
+              <button type="submit">Пошук</button>
+            </form>
+        </div>
+    `;
+
+        html += '<h1>Список випадкових аніме:</h1>';
 
         let count = 0;
         cachedAnimeData.forEach(anime => {
@@ -73,6 +82,60 @@ app.get('/', async (req, res) => {
     }
 });
 
+app.get('/search', async (req, res) => {
+    try {
+        const query = req.query.query;
+        if (!query) {
+            return res.status(400).send('Будь ласка, введіть запит для пошуку');
+        }
+
+        const response = await axios.get(`https://shikimori.me/api/animes?search=${encodeURIComponent(query)}`);
+        const searchResults = response.data;
+
+        let html = '<!DOCTYPE html><html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Результати пошуку</title>';
+
+        const styles = fs.readFileSync(path.join(__dirname, 'style.css'), 'utf-8');
+
+        html += `<style>${styles}</style></head><body>`;
+        html += `<h1>Результати пошуку для "${query}":</h1>`;
+        html += '<div class="anime-grid">';
+
+        let count = 0;
+        searchResults.forEach(anime => {
+            if (count % 5 === 0) {
+                if (count > 0) {
+                    html += '</div>';
+                }
+                html += '<div class="anime-row">';
+            }
+            html += '<div class="anime-card">';
+            html += `<a href="https://shikimori.me${anime.url}">`;
+            html += `<img class="anime-image" src="https://shikimori.me${anime.image.original}" alt="${anime.russian}">`;
+            html += `<div class="anime-title">${anime.russian}</div>`;
+            html += '</a>';
+            html += `<div class="anime-info"><strong>${translationMap['kind']}:</strong> ${anime.kind}</div>`;
+            html += `<div class="anime-info"><strong>${translationMap['score']}:</strong> ${anime.score}</div>`;
+            html += `<div class="anime-info"><strong>${translationMap['status']}:</strong> ${anime.status}</div>`;
+            html += `<div class="anime-info"><strong>${translationMap['episodes']}:</strong> ${anime.episodes}</div>`;
+            html += '</div>';
+            count++;
+        });
+
+        if (count > 0) {
+            html += '</div>';
+        } else {
+            html += '<p>Результатів не знайдено</p>';
+        }
+
+        html += '</body></html>';
+
+        res.send(html);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Внутрішня помилка сервера');
+    }
+});
+
 app.get('/json', async (req, res) => {
     try {
         if (!cachedAnimeData) {
@@ -99,5 +162,5 @@ app.get('/json', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Сервер працює за адресою http://localhost:${port}\n А відподіть на json за адресою http://localhost:${port}/json`);
+    console.log(`Сервер працює за адресою http://localhost:${port}\nА відподіть на json за адресою http://localhost:${port}/json`);
 });
